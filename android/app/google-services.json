@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "477908814836",
+    "project_id": "teamapp-d5ab5",
+    "storage_bucket": "teamapp-d5ab5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477908814836:android:39a2b577aa48d8dcac07a1",
+        "android_client_info": {
+          "package_name": "com.example.teamapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "477908814836-isf71o2m25j1ecvmgiaa085p6m259pit.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.teamapp",
+            "certificate_hash": "49753134a98a0a159fcf2c2fbe363511cb4beba4"
+          }
+        },
+        {
+          "client_id": "477908814836-m5dm3oeuae3plk581gf5k7habe6vf2rf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtaIh93oTAeaah1we4cnhyFQoHQsXJKR0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "477908814836-m5dm3oeuae3plk581gf5k7habe6vf2rf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "477908814836-8ehq1kip18r0p02cp7tc585c686tm758.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.teamapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477908814836:android:546fc0286bee7832ac07a1",
+        "android_client_info": {
+          "package_name": "com.example.testt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "477908814836-m5dm3oeuae3plk581gf5k7habe6vf2rf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtaIh93oTAeaah1we4cnhyFQoHQsXJKR0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "477908814836-m5dm3oeuae3plk581gf5k7habe6vf2rf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "477908814836-8ehq1kip18r0p02cp7tc585c686tm758.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.teamapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
