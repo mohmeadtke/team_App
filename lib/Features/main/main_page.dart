@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:teamapp/Features/main/back_ground.dart';
-import 'package:teamapp/Features/main/card_widet.dart';
-import 'package:teamapp/testpage.dart';
 
-import '../../bottom_bar.dart';
+import 'package:teamapp/testpage.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
