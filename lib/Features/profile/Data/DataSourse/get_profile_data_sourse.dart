@@ -1,51 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:teamapp/Features/profile/Domain/Entity/profile_get_entity.dart';
 
+import '../modle/data_modle.dart';
+
 class GetProfileDataSourse {
-  final ProfileGetEntity profileGetEntity;
+  Future<ProfileGetEntity> getData() async {
+    dynamic user = FirebaseAuth.instance.currentUser;
+    // print("gg");
+    // profileGetEntity.email = await user.email;
+    // print("${profileGetEntity.email}");
 
-  GetProfileDataSourse({required this.profileGetEntity});
+    // Query Firestore to find the document with the matching email
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: await user.email)
+        .get();
 
-  Future<void> getData() async {
-    try {
-      User? user = FirebaseAuth.instance.currentUser;
-
-      if (user == null) {
-        print("No user is signed in.");
-        return;
-      }
-
-      profileGetEntity.email = user.email ?? '';
-
-      // Query Firestore to find the document with the matching email
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .where('email', isEqualTo: user.email)
-          .get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        var userData = querySnapshot.docs.first.data();
-        print("User Data: $userData");
-      } else {
-        print("No user found with this email.");
-      }
-    } catch (e) {
-      print("Error getting user data: $e");
-    }
+    // Get the first matching document
+    final userData = querySnapshot.docs.first.data();
+    print("User data: $userData");
+    final result = ProfileModel.fromJsonn(userData as Map<String, dynamic>);
+    return result;
   }
-}
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // Initialize Firebase
-
-  ProfileGetEntity profileEntity =
-      ProfileGetEntity(email: "", imageurl: '', name: '', password: '');
-  GetProfileDataSourse profileDataSource =
-      GetProfileDataSourse(profileGetEntity: profileEntity);
-
-  profileDataSource.getData(); // Call the function to test
 }

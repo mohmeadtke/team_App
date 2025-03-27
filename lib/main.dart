@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teamapp/Features/auth/Presentation/pages/log_in_page.dart';
 import 'package:teamapp/Features/auth/Presentation/pages/verifie_page.dart';
 import 'package:teamapp/Features/main/main_page.dart';
+import 'package:teamapp/Features/profile/Presentation/state_mangmeant/bloc/profile_bloc.dart';
 import 'package:teamapp/auth_check.dart';
 import 'package:teamapp/testpage.dart';
 import 'Features/auth/Presentation/pages/sign_in_page.dart';
@@ -43,7 +44,11 @@ class MyApp extends StatelessWidget {
               child: VerifiePage(),
             ),
         '/mainPage': (context) => const MainPage(),
-        '/testPage': (context) => const Testpage()
+        // '/testPage': (context) => di.sl<Testpage>(),ProfileBloc,
+        '/testPage': (context) => BlocProvider(
+              create: (context) => di.sl<ProfileBloc>(),
+              child: const Testpage(),
+            )
       },
     );
   }

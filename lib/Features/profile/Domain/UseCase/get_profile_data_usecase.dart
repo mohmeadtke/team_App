@@ -8,7 +8,7 @@ class GetProfileDataUsecase {
 
   GetProfileDataUsecase({required this.profileRepo});
 
-  Future<Either<Failure, ProfileGetEntity>> getData() async {
+  Future<Either<Failure, ProfileGetEntity>> call() async {
     return await profileRepo.getData();
   }
 }

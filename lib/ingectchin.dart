@@ -21,12 +21,37 @@ import 'package:teamapp/Features/join%20Team/Data/RepoImpl/join_team_repo_impl.d
 import 'package:teamapp/Features/join%20Team/Domian/Repo/join_team_repo.dart';
 import 'package:teamapp/Features/join%20Team/Domian/UseCase/get_team_usecase.dart';
 import 'package:teamapp/Features/join%20Team/Domian/UseCase/join_team_usecase.dart';
+import 'package:teamapp/Features/profile/Data/DataSourse/get_profile_data_sourse.dart';
+import 'package:teamapp/Features/profile/Data/RepoImpl/profile_repo_impl.dart';
+import 'package:teamapp/Features/profile/Data/modle/data_modle.dart';
+import 'package:teamapp/Features/profile/Domain/Entity/profile_get_entity.dart';
+import 'package:teamapp/Features/profile/Domain/Repo/profile_repo.dart';
+import 'package:teamapp/Features/profile/Domain/UseCase/get_profile_data_usecase.dart';
+import 'package:teamapp/Features/profile/Domain/UseCase/update_profile_usecase.dart';
+import 'package:teamapp/Features/profile/Presentation/state_mangmeant/bloc/profile_bloc.dart';
 import 'package:teamapp/core/network/network_info.dart';
+import 'package:teamapp/core/widget/globl.dart';
 
 final sl = GetIt.instance;
 
 void init() {
 //! Features
+//? profile page
+//repo
+  sl.registerLazySingleton<ProfileRepo>(() => ProfileRepoImpl(
+        getProfileDataSourse: sl(),
+        networkInfo: sl(),
+      ));
+//use case
+  sl.registerLazySingleton(() => GetProfileDataUsecase(profileRepo: sl()));
+  sl.registerLazySingleton(() => UpdateProfileUsecase(profileRepo: sl()));
+//data
+  sl.registerFactory(() => GetProfileDataSourse());
+  // sl.registerLazySingleton(() =>
+  //     ProfileModel(imageurl: sl(), name: sl(), email: sl(), password: sl()));
+//bloc
+  sl.registerFactory(() => ProfileBloc(getProfileDataUsecase: sl()));
+
 //? joinTeam
   //repo
   sl.registerLazySingleton<JoinTeamRepo>(() => JoinTeamRepoImpl(
@@ -72,4 +97,8 @@ void init() {
   sl.registerLazySingleton<NetworkInfo>(
       () => NetworkInfoImpl(connectionChecker: sl()));
   sl.registerLazySingleton(() => InternetConnection());
+  sl.registerSingleton<Globals>(Globals());
+
+  // sl.registerLazySingleton(
+  //     () => ProfileGetEntity(imageurl: '', name: '', email: '', password: ''));
 }

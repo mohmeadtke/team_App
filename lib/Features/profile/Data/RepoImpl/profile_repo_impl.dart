@@ -11,14 +11,17 @@ import '../DataSourse/get_profile_data_sourse.dart';
 class ProfileRepoImpl implements ProfileRepo {
   final NetworkInfo networkInfo;
   final GetProfileDataSourse getProfileDataSourse;
-
+  // final ProfileGetEntity profileGetEntity;
   ProfileRepoImpl(
-      {required this.getProfileDataSourse, required this.networkInfo});
+      {
+      // required this.profileGetEntity,
+      required this.getProfileDataSourse,
+      required this.networkInfo});
   @override
   Future<Either<Failure, ProfileGetEntity>> getData() async {
     try {
       if (await networkInfo.isConnected == true) {
-        return left(Failure.serverError(massge: "not finsh yet"));
+        return right(await getProfileDataSourse.getData());
       } else {
         return left(Failure.offlineError());
       }

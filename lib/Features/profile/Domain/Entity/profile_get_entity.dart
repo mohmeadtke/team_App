@@ -1,8 +1,8 @@
 class ProfileGetEntity {
-  String name;
-  String email;
-  String password;
-  String imageurl;
+  final String name;
+  final String email;
+  final String password;
+  final String imageurl;
 
   ProfileGetEntity(
       {required this.imageurl,
