@@ -6,11 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teamapp/Features/profile/Domain/Entity/profile_get_entity.dart';
 import 'package:teamapp/Features/profile/Presentation/state_mangmeant/bloc/profile_bloc.dart';
 
-import '../../../../core/widget/globl.dart';
-import 'package:get_it/get_it.dart';
-
-final GetIt getIt = GetIt.instance;
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -27,6 +22,7 @@ class _ProfilePageState extends State<ProfilePage> {
     });
 
     Timer(const Duration(seconds: 3), () {
+      if (!mounted) return;
       setState(() {
         see = false;
       });
@@ -57,9 +53,9 @@ class _ProfilePageState extends State<ProfilePage> {
             return const Center(
                 child: CircularProgressIndicator(color: Colors.white));
           } else if (state is SuccessState) {
+            String image = "";
             final ProfileGetEntity profileData = state.data;
-            getIt<Globals>().email = profileData.email;
-            getIt<Globals>().name = profileData.name;
+            image = state.data.imageurl;
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -67,9 +63,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 50),
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 60,
-                      // backgroundImage: NetworkImage(profileData['imageUrl']!),
+                      backgroundImage: image.isEmpty
+                          ? const AssetImage('assets/images/anun.jpg')
+                          : NetworkImage(image) as ImageProvider,
                       backgroundColor:
                           const Color(0xFF16213E), // Deep dark blue
                     ),
@@ -82,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: Colors.white,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 20),
                     Text(
                       profileData.email,
                       style: const TextStyle(
@@ -90,7 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: Colors.grey,
                       ),
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 20),
                     Center(
                       child: Row(
                         children: [
@@ -98,20 +96,20 @@ class _ProfilePageState extends State<ProfilePage> {
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 12, horizontal: 24),
-                            decoration: BoxDecoration(
-                              color:
-                                  const Color(0xFF0F3460), // Dark purple-blue
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.3),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 5),
-                                )
-                              ],
-                            ),
+                            // decoration: BoxDecoration(
+                            //   color:
+                            //       const Color(0xFF0F3460), // Dark purple-blue
+                            //   borderRadius: BorderRadius.circular(12),
+                            //   boxShadow: [
+                            //     BoxShadow(
+                            //       color: Colors.black.withOpacity(0.3),
+                            //       blurRadius: 10,
+                            //       offset: const Offset(0, 5),
+                            //     )
+                            //   ],
+                            // ),
                             child: Text(
-                              "Ur PassWord: ${see ? profileData.password : "*******"}",
+                              "PassWord: ${see ? profileData.password : "*******"}",
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,

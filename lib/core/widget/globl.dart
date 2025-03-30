@@ -1,4 +1,4 @@
 class Globals {
-  String email = "t";
-  String name = "k";
+  String email = "";
+  String name = "";
 }

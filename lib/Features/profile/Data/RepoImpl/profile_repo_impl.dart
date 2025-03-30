@@ -23,7 +23,7 @@ class ProfileRepoImpl implements ProfileRepo {
       if (await networkInfo.isConnected == true) {
         return right(await getProfileDataSourse.getData());
       } else {
-        return left(Failure.offlineError());
+        return left(const Failure.offlineError());
       }
     } catch (e) {
       return left(Failure.serverError(massge: e.toString()));
