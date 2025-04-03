@@ -11,7 +11,6 @@ class SignInWithGoogle {
     try {
       // Trigger the authentication flow
       final googleUser = await _googleSignIn.signIn();
-      print('google use data' + googleUser.toString());
 
       if (googleUser == null) {
         return unit; // User canceled the sign-in
@@ -30,11 +29,9 @@ class SignInWithGoogle {
       // Sign in to Firebase with the Google credential
       final UserCredential userCredential =
           await _auth.signInWithCredential(credential);
-      print(userCredential);
       return unit;
       // return userCredential.user; // Return the signed-in user
     } catch (e) {
-      print('Error signing in with Google: $e');
       return unit;
     }
   }

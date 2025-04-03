@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:teamapp/Features/profile/Domain/Entity/profile_get_entity.dart';
+import 'package:teamapp/Features/profile/Domain/Entity/profile_update_entity.dart';
 import 'package:teamapp/Features/profile/Presentation/state_mangmeant/bloc/profile_bloc.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -15,6 +18,20 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   bool see = false;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage(ImageSource source, dynamic profileData) async {
+    final XFile? pickedFile = await _picker.pickImage(source: source);
+    if (pickedFile != null) {
+      final image = File(pickedFile.path);
+      context.read<ProfileBloc>().add(UpdateDataEvent(
+          profileUpdateEntity: ProfileUpdateEntity(
+              image: image,
+              name: profileData.name,
+              passWord: profileData.password)));
+    }
+    return;
+  }
 
   void activateBall() {
     setState(() {
@@ -63,13 +80,38 @@ class _ProfilePageState extends State<ProfilePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 50),
-                    CircleAvatar(
-                      radius: 60,
-                      backgroundImage: image.isEmpty
-                          ? const AssetImage('assets/images/anun.jpg')
-                          : NetworkImage(image) as ImageProvider,
-                      backgroundColor:
-                          const Color(0xFF16213E), // Deep dark blue
+                    Stack(
+                      children: [
+                        Center(
+                          child: CircleAvatar(
+                            radius: 60,
+                            backgroundImage: image.isEmpty
+                                ? const AssetImage('assets/images/anun.jpg')
+                                : NetworkImage(image) as ImageProvider,
+                            backgroundColor:
+                                const Color(0xFF16213E), // Deep dark blue
+                          ),
+                        ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 80, left: 80),
+                            child: GestureDetector(
+                              //todo make it uplde the image
+                              onTap: () {
+                                _pickImage(ImageSource.gallery, profileData);
+                              },
+                              child: Container(
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                    color: Colors.deepPurple[700],
+                                    borderRadius: BorderRadius.circular(100)),
+                                child: const Icon(Icons.camera_alt),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 20),
                     Text(
@@ -150,10 +192,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         child: const Row(
                           mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            Icon(Icons.logout, color: Colors.white, size: 24),
-                            SizedBox(width: 10),
-                            Text(
+                          children: [
+                            const Icon(Icons.logout,
+                                color: Colors.white, size: 24),
+                            const SizedBox(width: 10),
+                            const Text(
                               "Log Out",
                               style: TextStyle(
                                 fontSize: 18,

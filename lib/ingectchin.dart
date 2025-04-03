@@ -22,9 +22,8 @@ import 'package:teamapp/Features/join%20Team/Domian/Repo/join_team_repo.dart';
 import 'package:teamapp/Features/join%20Team/Domian/UseCase/get_team_usecase.dart';
 import 'package:teamapp/Features/join%20Team/Domian/UseCase/join_team_usecase.dart';
 import 'package:teamapp/Features/profile/Data/DataSourse/get_profile_data_sourse.dart';
+import 'package:teamapp/Features/profile/Data/DataSourse/update_profile_data.dart';
 import 'package:teamapp/Features/profile/Data/RepoImpl/profile_repo_impl.dart';
-import 'package:teamapp/Features/profile/Data/modle/data_modle.dart';
-import 'package:teamapp/Features/profile/Domain/Entity/profile_get_entity.dart';
 import 'package:teamapp/Features/profile/Domain/Repo/profile_repo.dart';
 import 'package:teamapp/Features/profile/Domain/UseCase/get_profile_data_usecase.dart';
 import 'package:teamapp/Features/profile/Domain/UseCase/update_profile_usecase.dart';
@@ -41,16 +40,19 @@ void init() {
   sl.registerLazySingleton<ProfileRepo>(() => ProfileRepoImpl(
         getProfileDataSourse: sl(),
         networkInfo: sl(),
+        updateProfileData: sl(),
       ));
 //use case
   sl.registerLazySingleton(() => GetProfileDataUsecase(profileRepo: sl()));
   sl.registerLazySingleton(() => UpdateProfileUsecase(profileRepo: sl()));
 //data
   sl.registerFactory(() => GetProfileDataSourse());
+  sl.registerFactory(() => UpdateProfileData());
   // sl.registerLazySingleton(() =>
   //     ProfileModel(imageurl: sl(), name: sl(), email: sl(), password: sl()));
 //bloc
-  sl.registerFactory(() => ProfileBloc(getProfileDataUsecase: sl()));
+  sl.registerFactory(() =>
+      ProfileBloc(getProfileDataUsecase: sl(), updateProfileUsecase: sl()));
 
 //? joinTeam
   //repo

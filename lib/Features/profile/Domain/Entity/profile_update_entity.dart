@@ -5,5 +5,6 @@ class ProfileUpdateEntity {
   final String name;
   final String passWord;
 
-  ProfileUpdateEntity(this.image, this.name, this.passWord);
+  ProfileUpdateEntity(
+      {required this.image, required this.name, required this.passWord});
 }

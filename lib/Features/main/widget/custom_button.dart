@@ -25,7 +25,7 @@ class CustomButton extends StatelessWidget {
               color: Colors.deepPurpleAccent.withOpacity(0.5),
               blurRadius: 10,
               spreadRadius: 1,
-              offset: Offset(3, 3),
+              offset: const Offset(3, 3),
             ),
           ],
         ),
