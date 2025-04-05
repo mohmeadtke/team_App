@@ -33,8 +33,16 @@ class Testpage extends StatelessWidget {
           CustomButton(
             text: 'Join Team',
             onTap: () {
-              context.read<ProfileBloc>().add(LoadDataEvent());
-              // print("helowwwwwwwwwwwwww");
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Center(
+                      child: Text(
+                    'User name updated!',
+                    style: TextStyle(color: Colors.white, fontSize: 25),
+                  )),
+                  backgroundColor: Color.fromARGB(221, 60, 250, 3),
+                ),
+              );
             },
           ),
           const SizedBox(

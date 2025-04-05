@@ -7,7 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:teamapp/Features/profile/Domain/Entity/profile_get_entity.dart';
 import 'package:teamapp/Features/profile/Domain/Entity/profile_update_entity.dart';
+import 'package:teamapp/Features/profile/Presentation/pages/change_user_name_page.dart';
 import 'package:teamapp/Features/profile/Presentation/state_mangmeant/bloc/profile_bloc.dart';
+
+import '../../../../ingectchin.dart' as di;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -26,6 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
       final image = File(pickedFile.path);
       context.read<ProfileBloc>().add(UpdateDataEvent(
           profileUpdateEntity: ProfileUpdateEntity(
+              cheek: "image",
               image: image,
               name: profileData.name,
               passWord: profileData.password)));
@@ -96,7 +100,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 80, left: 80),
                             child: GestureDetector(
-                              //todo make it uplde the image
                               onTap: () {
                                 _pickImage(ImageSource.gallery, profileData);
                               },
@@ -114,13 +117,37 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    Text(
-                      profileData.name,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                    Row(
+                      children: [
+                        const Spacer(),
+                        Text(
+                          profileData.name,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              final profileBloc = di.sl<ProfileBloc>();
+                              profileBloc.add(LoadDataEvent());
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BlocProvider.value(
+                                    value: profileBloc,
+                                    child: ChangeUsernamePage(
+                                      currentUsername: profileData.name,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.edit)),
+                        const Spacer(),
+                      ],
                     ),
                     const SizedBox(height: 20),
                     Text(
@@ -138,18 +165,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 12, horizontal: 24),
-                            // decoration: BoxDecoration(
-                            //   color:
-                            //       const Color(0xFF0F3460), // Dark purple-blue
-                            //   borderRadius: BorderRadius.circular(12),
-                            //   boxShadow: [
-                            //     BoxShadow(
-                            //       color: Colors.black.withOpacity(0.3),
-                            //       blurRadius: 10,
-                            //       offset: const Offset(0, 5),
-                            //     )
-                            //   ],
-                            // ),
                             child: Text(
                               "PassWord: ${see ? profileData.password : "*******"}",
                               style: const TextStyle(
@@ -193,10 +208,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: const Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.logout,
-                                color: Colors.white, size: 24),
-                            const SizedBox(width: 10),
-                            const Text(
+                            Icon(Icons.logout, color: Colors.white, size: 24),
+                            SizedBox(width: 10),
+                            Text(
                               "Log Out",
                               style: TextStyle(
                                 fontSize: 18,
