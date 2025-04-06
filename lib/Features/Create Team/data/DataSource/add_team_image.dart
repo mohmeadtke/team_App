@@ -3,10 +3,10 @@ import 'package:teamapp/Features/Create%20Team/Domain/Entity/team_entity.dart';
 
 class AddTeamImage {
   Future<String> uploadImage(TeamEntity teamentity) async {
-    final ownerid = teamentity.ownerid.toString();
+    final ownerid = teamentity.teamName.toString();
     // Reference to the storage location
     final storageRef =
-        FirebaseStorage.instance.ref().child('images/$ownerid/profile.jpg');
+        FirebaseStorage.instance.ref().child('Teamimages/$ownerid.jpg');
 
     // Upload the file
     final uploadTask = storageRef.putFile(teamentity.image);

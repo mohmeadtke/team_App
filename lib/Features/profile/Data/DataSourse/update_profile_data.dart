@@ -18,7 +18,7 @@ class UpdateProfileData {
 
     //update image
     if (updateData.cheek == "image") {
-      //upload data to stoge
+      //upload image to stoge
       Reference ref =
           FirebaseStorage.instance.ref().child("profile image/$docId.jpg");
       UploadTask uploadTask = ref.putFile(updateData.image);

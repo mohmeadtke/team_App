@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:teamapp/Features/main/widget/custom_button.dart';
-import 'package:teamapp/Features/profile/Presentation/state_mangmeant/bloc/profile_bloc.dart';
+import 'package:teamapp/Features/join%20Team/Presentation/pages/test_page.dart';
+import 'package:teamapp/core/widget/custom_button.dart';
 import 'package:teamapp/core/widget/app_bar_widget.dart';
 
 import 'core/widget/side_bar_widget.dart';
@@ -33,16 +32,8 @@ class Testpage extends StatelessWidget {
           CustomButton(
             text: 'Join Team',
             onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Center(
-                      child: Text(
-                    'User name updated!',
-                    style: TextStyle(color: Colors.white, fontSize: 25),
-                  )),
-                  backgroundColor: Color.fromARGB(221, 60, 250, 3),
-                ),
-              );
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const TeamSearchPage()));
             },
           ),
           const SizedBox(
@@ -50,7 +41,9 @@ class Testpage extends StatelessWidget {
           ),
           CustomButton(
             text: 'Create Team',
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/createTeamPage');
+            },
           ),
           const Spacer()
         ],

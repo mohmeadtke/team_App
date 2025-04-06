@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teamapp/Features/Create%20Team/Presentation/pages/create_team_page.dart';
+import 'package:teamapp/Features/Create%20Team/Presentation/state_mangment/bloc/create_team_bloc.dart';
 import 'package:teamapp/Features/auth/Presentation/pages/log_in_page.dart';
 import 'package:teamapp/Features/auth/Presentation/pages/verifie_page.dart';
 import 'package:teamapp/Features/main/main_page.dart';
@@ -49,6 +51,10 @@ class MyApp extends StatelessWidget {
         '/testPage': (context) => BlocProvider(
               create: (context) => di.sl<ProfileBloc>(),
               child: const Testpage(),
+            ),
+        '/createTeamPage': (context) => BlocProvider(
+              create: (context) => di.sl<CreateTeamBloc>(),
+              child: CreateTeamPage(),
             )
       },
     );

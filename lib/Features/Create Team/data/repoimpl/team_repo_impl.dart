@@ -20,9 +20,9 @@ class TeamRepoImpl implements TeamRepo {
   Future<Either<Failure, Unit>> createTeam(TeamEntity team) async {
     if (await networkInfo.isConnected) {
       try {
-        final String imageUrle = await addTeamImage.uploadImage(team);
+        // final String imageUrle = await addTeamImage.uploadImage(team);
 
-        createTeamDataSource.createTeam(team, imageUrle);
+        createTeamDataSource.createTeam(team);
         return const Right(unit);
       } catch (e) {
         return Left(Failure.serverError(massge: e.toString()));

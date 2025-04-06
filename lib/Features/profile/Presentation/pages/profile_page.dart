@@ -19,6 +19,7 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
+//todo distrpude some widget2
 class _ProfilePageState extends State<ProfilePage> {
   bool see = false;
   final ImagePicker _picker = ImagePicker();

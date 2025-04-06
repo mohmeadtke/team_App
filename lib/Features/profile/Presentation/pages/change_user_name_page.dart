@@ -12,7 +12,7 @@ class ChangeUsernamePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController _usernameController = TextEditingController();
-
+//todo distrpude some widget
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Profile'),
@@ -57,13 +57,14 @@ class ChangeUsernamePage extends StatelessWidget {
                     );
                     return;
                   }
-
-                  context.read<ProfileBloc>().add(UpdateDataEvent(
+                  final data = UpdateDataEvent(
                       profileUpdateEntity: ProfileUpdateEntity(
                           cheek: "name",
                           image: File(""),
                           name: _usernameController.value.text,
-                          passWord: "")));
+                          passWord: ""));
+
+                  context.read<ProfileBloc>().add(data);
                   Navigator.pop(context);
 
                   ScaffoldMessenger.of(context).showSnackBar(
