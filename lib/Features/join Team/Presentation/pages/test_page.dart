@@ -7,6 +7,7 @@ class TeamSearchPage extends StatefulWidget {
   State<TeamSearchPage> createState() => _TeamSearchPageState();
 }
 
+//fix
 class _TeamSearchPageState extends State<TeamSearchPage> {
   final TextEditingController _searchController = TextEditingController();
   List<String> allTeams = [
