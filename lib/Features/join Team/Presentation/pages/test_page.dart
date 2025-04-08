@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teamapp/Features/join%20Team/Presentation/State_mangmeant/bloc/join_team_bloc.dart';
 
 class TeamSearchPage extends StatefulWidget {
   const TeamSearchPage({super.key});
@@ -7,32 +11,21 @@ class TeamSearchPage extends StatefulWidget {
   State<TeamSearchPage> createState() => _TeamSearchPageState();
 }
 
-//fix
 class _TeamSearchPageState extends State<TeamSearchPage> {
   final TextEditingController _searchController = TextEditingController();
-  List<String> allTeams = [
-    "Lions Squad",
-    "Falcon Force",
-    "Eagle Eyes",
-    "Shadow Strikers",
-    "Cyber Ninjas",
-    "Code Avengers",
-    "Dream Builders",
-  ];
-  List<String> filteredTeams = [];
-
   @override
-  void initState() {
-    super.initState();
-    filteredTeams = allTeams;
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
   }
 
+  Timer? _debounce;
+
   void _filterTeams(String query) {
-    final results = allTeams
-        .where((team) => team.toLowerCase().contains(query.toLowerCase()))
-        .toList();
-    setState(() {
-      filteredTeams = results;
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      context.read<JoinTeamBloc>().add(SerchForTeamEvent(teamName: query));
     });
   }
 
@@ -70,18 +63,25 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
               ),
             ),
             const SizedBox(height: 20),
-
-            // 📋 Team List
-            Expanded(
-              child: filteredTeams.isEmpty
-                  ? const Center(
-                      child: Text(
-                        'No teams found',
-                        style: TextStyle(color: Colors.white70),
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: filteredTeams.length,
+            BlocConsumer<JoinTeamBloc, JoinTeamState>(
+                listener: (context, state) {
+              if (state is FailureState) {
+                Center(
+                  child: Text(state.messge),
+                );
+              }
+            }, builder: (context, state) {
+              if (state is LoadingState) {
+                return const CircularProgressIndicator();
+              } else if (state is SuccessState) {
+                final data = state.data;
+                print(data);
+                if (data == null || data == 0 || data.length == 0) {
+                  return const Text("no team found ");
+                } else {
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: data.length,
                       itemBuilder: (context, index) {
                         return Container(
                           margin: const EdgeInsets.symmetric(vertical: 8),
@@ -99,14 +99,27 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                           ),
                           child: Row(
                             children: [
-                              const CircleAvatar(
-                                radius: 25,
-                                backgroundColor: Colors.white12,
-                                child: Icon(Icons.group, color: Colors.white),
+                              CircleAvatar(
+                                radius: 50,
+                                backgroundColor: Colors.grey[800],
+                                child: data[index].teamImage == ""
+                                    ? const Icon(
+                                        Icons.group,
+                                        color: Colors.white70,
+                                        size: 30,
+                                      )
+                                    : ClipOval(
+                                        child: Image.network(
+                                          data[index].teamImage,
+                                          fit: BoxFit.cover,
+                                          width: 100,
+                                          height: 100,
+                                        ),
+                                      ),
                               ),
                               const SizedBox(width: 16),
                               Text(
-                                filteredTeams[index],
+                                data[index].teamName,
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,
@@ -118,7 +131,17 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                         );
                       },
                     ),
-            ),
+                  );
+                }
+              } else if (state is FailureState) {
+                return Center(
+                  child: Text(state.messge),
+                );
+              } else {
+                return const Center(child: Text("type something to serch "));
+              }
+            }),
+            // 📋 Team List
           ],
         ),
       ),

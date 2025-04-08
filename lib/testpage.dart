@@ -32,8 +32,7 @@ class Testpage extends StatelessWidget {
           CustomButton(
             text: 'Join Team',
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => const TeamSearchPage()));
+              Navigator.pushNamed(context, '/joinTeamPage');
             },
           ),
           const SizedBox(

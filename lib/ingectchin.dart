@@ -21,6 +21,7 @@ import 'package:teamapp/Features/join%20Team/Data/RepoImpl/join_team_repo_impl.d
 import 'package:teamapp/Features/join%20Team/Domian/Repo/join_team_repo.dart';
 import 'package:teamapp/Features/join%20Team/Domian/UseCase/get_team_usecase.dart';
 import 'package:teamapp/Features/join%20Team/Domian/UseCase/join_team_usecase.dart';
+import 'package:teamapp/Features/join%20Team/Presentation/State_mangmeant/bloc/join_team_bloc.dart';
 import 'package:teamapp/Features/profile/Data/DataSourse/get_profile_data_sourse.dart';
 import 'package:teamapp/Features/profile/Data/DataSourse/update_profile_data.dart';
 import 'package:teamapp/Features/profile/Data/RepoImpl/profile_repo_impl.dart';
@@ -64,6 +65,9 @@ void init() {
   //data
   sl.registerFactory(() => JoinTeamDataSource());
   sl.registerFactory(() => GetTeamDataSource());
+  //bloc
+  sl.registerFactory(
+      () => JoinTeamBloc(getTeamUsecase: sl(), joinTeamUsecase: sl()));
 //?Create a team
   //repo
   sl.registerLazySingleton<TeamRepo>(() => TeamRepoImpl(

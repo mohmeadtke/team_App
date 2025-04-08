@@ -6,34 +6,30 @@ import 'package:teamapp/core/failure/failure.dart';
 //166
 //1 git
 class JoinTeamDataSource {
-  Future<Either<Failure, Unit>> joinTeamFun(
-      Jointeamentity jointeamentity) async {
+  Future<Either<Failure, Unit>> joinTeamFun(String teamId) async {
     // Reference to the Firestore document inside the "teams" collection
-    final teamDoc = FirebaseFirestore.instance
-        .collection('teams')
-        .doc(jointeamentity.teamId);
+    final teamDoc = FirebaseFirestore.instance.collection('teams').doc(teamId);
 
     // Fetch the team document
     final snapshot = await teamDoc.get();
 
-    // Get the password stored in Firestore
-    final teamData = snapshot.data();
-    final storedPassword = teamData?['passWord'];
+    // // Get the password stored in Firestore
+    // final teamData = snapshot.data();
+    // final storedPassword = teamData?['passWord'];
 
     // Compare the entered password with the stored password
-    if (jointeamentity.passwrod == storedPassword) {
-      // Passwords match; proceed to write additional data
-      await teamDoc.update({
-        'userId': jointeamentity.userId,
-        'userName': jointeamentity.userName,
-        'joinedAt': FieldValue.serverTimestamp(),
-      });
-      print('User added to the team successfully.');
-      return const Right(unit);
-    } else {
-      print('Incorrect password.');
-      return const Left(
-          Failure.wrongPassword(massge: "the password is not correct"));
-    }
+    // if (jointeamentity.passwrod == storedPassword) {
+    // Passwords match; proceed to write additional data
+    // await teamDoc.update({
+    //   'userId': jointeamentity.userId,
+    //   'userName': jointeamentity.userName,
+    //   'joinedAt': FieldValue.serverTimestamp(),
+    // });
+    print('User added to the team successfully.');
+    return const Right(unit);
+    // } else {
+    // print('Incorrect password.');
+    // return const Left(
+    //     Failure.wrongPassword(massge: "the password is not correct"));
   }
 }

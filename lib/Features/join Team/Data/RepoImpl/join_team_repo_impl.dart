@@ -17,10 +17,11 @@ class JoinTeamRepoImpl implements JoinTeamRepo {
       required this.networkInfo});
 
   @override
-  Future<Either<Failure, List>> getTeamFun(String teamName) async {
+  Future<Either<Failure, List<Jointeamentity>>> getTeamsData(
+      String teamName) async {
     if (await networkInfo.isConnected) {
       try {
-        List teams = await getTeamDataSource.getTeams(teamName);
+        List<Jointeamentity> teams = await getTeamDataSource.getTeams(teamName);
         return Right(teams);
       } catch (e) {
         return Left(Failure.serverError(massge: e.toString()));
@@ -31,14 +32,13 @@ class JoinTeamRepoImpl implements JoinTeamRepo {
   }
 
   @override
-  Future<Either<Failure, Unit>> joinTeamFun(
-      Jointeamentity jointeamentity) async {
+  Future<Either<Failure, Unit>> joinTeamFun(String teamId) async {
     if (await networkInfo.isConnected) {
       try {
-        joinTeamDataSource.joinTeamFun(jointeamentity);
+        joinTeamDataSource.joinTeamFun(teamId);
         return const Right(unit);
       } catch (e) {
-        return Left(Failure.serverError(massge: e.toString()));      
+        return Left(Failure.serverError(massge: e.toString()));
       }
     } else {
       return const Left(Failure.offlineError());

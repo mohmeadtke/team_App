@@ -1,12 +1,13 @@
 class Jointeamentity {
   final String teamId;
   final String passwrod;
-  final String userName;
-  final String userId;
+  final String teamName;
+  final String teamImage;
 
-  Jointeamentity(
-      {required this.teamId,
-      required this.passwrod,
-      required this.userName,
-      required this.userId});
+  Jointeamentity({
+    required this.teamName,
+    required this.teamImage,
+    required this.teamId,
+    required this.passwrod,
+  });
 }

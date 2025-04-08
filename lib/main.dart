@@ -5,6 +5,8 @@ import 'package:teamapp/Features/Create%20Team/Presentation/pages/create_team_pa
 import 'package:teamapp/Features/Create%20Team/Presentation/state_mangment/bloc/create_team_bloc.dart';
 import 'package:teamapp/Features/auth/Presentation/pages/log_in_page.dart';
 import 'package:teamapp/Features/auth/Presentation/pages/verifie_page.dart';
+import 'package:teamapp/Features/join%20Team/Presentation/State_mangmeant/bloc/join_team_bloc.dart';
+import 'package:teamapp/Features/join%20Team/Presentation/pages/test_page.dart';
 import 'package:teamapp/Features/main/main_page.dart';
 import 'package:teamapp/Features/profile/Presentation/state_mangmeant/bloc/profile_bloc.dart';
 import 'package:teamapp/auth_check.dart';
@@ -14,6 +16,7 @@ import 'Features/auth/Presentation/state_mangment/bloc/auth_bloc.dart';
 import 'ingectchin.dart' as di;
 
 //some code
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -54,7 +57,11 @@ class MyApp extends StatelessWidget {
             ),
         '/createTeamPage': (context) => BlocProvider(
               create: (context) => di.sl<CreateTeamBloc>(),
-              child: CreateTeamPage(),
+              child: const CreateTeamPage(),
+            ),
+        '/joinTeamPage': (context) => BlocProvider(
+              create: (context) => di.sl<JoinTeamBloc>(),
+              child: const TeamSearchPage(),
             )
       },
     );
