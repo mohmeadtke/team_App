@@ -1,35 +1,35 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:teamapp/Features/join%20Team/Domian/Entity/join_team_entity.dart';
-import 'package:teamapp/core/failure/failure.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-//166
-//1 git
+import '../../../../core/failure/failure.dart';
+
 class JoinTeamDataSource {
   Future<Either<Failure, Unit>> joinTeamFun(String teamId) async {
-    // Reference to the Firestore document inside the "teams" collection
-    final teamDoc = FirebaseFirestore.instance.collection('teams').doc(teamId);
+    // add the usre to the tame
+    dynamic user = FirebaseAuth.instance.currentUser;
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: await user.email)
+        .get();
+    String docId = querySnapshot.docs.first.id;
+    //add the team id in user data
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(docId)
+        .update({'teamId': teamId});
+    // add the usre to the tame
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    WriteBatch batch = firestore.batch();
 
-    // Fetch the team document
-    final snapshot = await teamDoc.get();
+    DocumentReference userDoc = firestore.collection('teams').doc(teamId);
+    batch.update(userDoc, {
+      'members': FieldValue.arrayUnion([docId])
+    });
 
-    // // Get the password stored in Firestore
-    // final teamData = snapshot.data();
-    // final storedPassword = teamData?['passWord'];
+// Don't forget to commit the batch
+    await batch.commit();
 
-    // Compare the entered password with the stored password
-    // if (jointeamentity.passwrod == storedPassword) {
-    // Passwords match; proceed to write additional data
-    // await teamDoc.update({
-    //   'userId': jointeamentity.userId,
-    //   'userName': jointeamentity.userName,
-    //   'joinedAt': FieldValue.serverTimestamp(),
-    // });
-    print('User added to the team successfully.');
     return const Right(unit);
-    // } else {
-    // print('Incorrect password.');
-    // return const Left(
-    //     Failure.wrongPassword(massge: "the password is not correct"));
   }
 }

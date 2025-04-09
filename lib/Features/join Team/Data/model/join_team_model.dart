@@ -5,12 +5,12 @@ class JoinTeamModel extends Jointeamentity {
       {required super.teamName,
       required super.teamImage,
       required super.teamId,
-      required super.passwrod});
+      required super.password});
 
   factory JoinTeamModel.fromJson(Map<String, dynamic> json) {
     return JoinTeamModel(
       teamId: json['teamId'] ?? '',
-      passwrod: json['passwrod'] ?? '',
+      password: json['passWord'] ?? '',
       teamName: json['teamName'] ?? '',
       teamImage: json['teamImage'] ?? '',
     );

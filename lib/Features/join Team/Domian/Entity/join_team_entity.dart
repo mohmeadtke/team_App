@@ -1,6 +1,6 @@
 class Jointeamentity {
   final String teamId;
-  final String passwrod;
+  final String password;
   final String teamName;
   final String teamImage;
 
@@ -8,6 +8,6 @@ class Jointeamentity {
     required this.teamName,
     required this.teamImage,
     required this.teamId,
-    required this.passwrod,
+    required this.password,
   });
 }

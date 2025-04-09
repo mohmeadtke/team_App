@@ -144,13 +144,31 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
                   //todod make the user jon when he creat the team
 
                   onTap: () {
-                    final data = TeamEntity(
-                        image: File(_image!.path),
-                        teamName: _teamNameController.value.text,
-                        passWord: _passwordController.value.text);
-                    context
-                        .read<CreateTeamBloc>()
-                        .add(CreateTeamEvent.create(teamentity: data));
+                    if (_formKey.currentState!.validate()) {
+                      if (_image == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Center(
+                              child: Text(
+                                "You should implement an image",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            backgroundColor: Colors.redAccent,
+                          ),
+                        );
+                        return;
+                      }
+
+                      final data = TeamEntity(
+                          image: File(_image!.path),
+                          teamName: _teamNameController.value.text,
+                          passWord: _passwordController.value.text);
+                      context
+                          .read<CreateTeamBloc>()
+                          .add(CreateTeamEvent.create(teamentity: data));
+                      Navigator.pop(context);
+                    }
                   },
                   child: Container(
                     width: 200,

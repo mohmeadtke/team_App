@@ -45,19 +45,25 @@ class CreateTeamDataSource {
     TaskSnapshot snapshot = await uploadTask;
     String downloadUrl = await snapshot.ref.getDownloadURL();
 
+    //uplode data of the team to fireStore
     DocumentReference userDoc = firestore.collection('teams').doc(teamId);
     batch.set(userDoc, {
       'ownerId': docId,
       'teamId': teamId,
       'teamName': teamentity.teamName,
       'passWord': teamentity.passWord,
-      'teamImage': downloadUrl
+      'teamImage': downloadUrl,
+      'members': FieldValue.arrayUnion([docId])
     });
+    //add the team that the user join in
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(docId)
+        .update({'teamId': teamId});
 
     // Commit the batch
     await batch.commit();
 
-    print("team added with custom ID: $teamId");
     return unit;
   }
 }

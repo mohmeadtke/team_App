@@ -11,15 +11,12 @@ class GetTeamDataSource {
         .where('teamName', isLessThan: '${teamName}z')
         .get();
 
-    print(teamName);
-    print("the snap is ${querySnapshot.docs}");
     List<Jointeamentity> results = querySnapshot.docs.map((doc) {
       final data = doc.data() as Map<String, dynamic>;
       data['teamId'] = doc.id; // Set document ID manually
       return JoinTeamModel.fromJson(data);
     }).toList();
 
-    print(results);
     return results;
   }
 }
