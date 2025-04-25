@@ -7,10 +7,9 @@ import 'package:teamapp/Features/auth/Presentation/pages/log_in_page.dart';
 import 'package:teamapp/Features/auth/Presentation/pages/verifie_page.dart';
 import 'package:teamapp/Features/join%20Team/Presentation/State_mangmeant/bloc/join_team_bloc.dart';
 import 'package:teamapp/Features/join%20Team/Presentation/pages/test_page.dart';
-import 'package:teamapp/Features/main/main_page.dart';
+import 'package:teamapp/Features/main/Presentation/pages/main_page.dart';
 import 'package:teamapp/Features/profile/Presentation/state_mangmeant/bloc/profile_bloc.dart';
 import 'package:teamapp/auth_check.dart';
-import 'package:teamapp/testpage.dart';
 import 'Features/auth/Presentation/pages/sign_in_page.dart';
 import 'Features/auth/Presentation/state_mangment/bloc/auth_bloc.dart';
 import 'ingectchin.dart' as di;
@@ -35,6 +34,7 @@ class MyApp extends StatelessWidget {
       // home: UserFormPage(
       //   teamRepo: di.sl(),
       // ),
+
       routes: {
         '/': (context) => const Auth(),
         '/SignIn': (context) => BlocProvider(
@@ -49,11 +49,10 @@ class MyApp extends StatelessWidget {
               create: (context) => di.sl<AuthBloc>(),
               child: VerifiePage(),
             ),
-        '/mainPage': (context) => const MainPage(),
         // '/testPage': (context) => di.sl<Testpage>(),ProfileBloc,
-        '/testPage': (context) => BlocProvider(
+        '/mainPage': (context) => BlocProvider(
               create: (context) => di.sl<ProfileBloc>(),
-              child: const Testpage(),
+              child: const MainPage(),
             ),
         '/createTeamPage': (context) => BlocProvider(
               create: (context) => di.sl<CreateTeamBloc>(),

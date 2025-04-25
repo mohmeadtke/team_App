@@ -55,7 +55,7 @@ class CreateTeamDataSource {
       'teamImage': downloadUrl,
       'members': FieldValue.arrayUnion([docId])
     });
-    //add the team that the user join in
+    //add the team id in user data
     await FirebaseFirestore.instance
         .collection('users')
         .doc(docId)

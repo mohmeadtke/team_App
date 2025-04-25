@@ -19,7 +19,7 @@ class Auth extends StatelessWidget {
                 // Navigate to the UserFormPage
 
                 Future.microtask(
-                    () => Navigator.pushReplacementNamed(context, '/testPage'));
+                    () => Navigator.pushReplacementNamed(context, '/mainPage'));
               } else {
                 // Navigate to the Verifie page
 
