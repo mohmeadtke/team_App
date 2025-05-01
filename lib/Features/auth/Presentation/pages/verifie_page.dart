@@ -23,8 +23,10 @@ class VerifiePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // App title
-                const Toptext(
-                    text: "check your email to verifie than press continue"),
+                const Center(
+                  child: Toptext(
+                      text: "check your email to verifie than press continue"),
+                ),
 
                 const Spacer(),
                 Button(
