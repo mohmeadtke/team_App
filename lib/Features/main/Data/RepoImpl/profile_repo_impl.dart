@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:teamapp/Features/main/Data/DataSourse/get_data_of_team_data_source.dart';
-import 'package:teamapp/Features/main/Domain/Entity/main-page_entity.dart';
+import 'package:teamapp/Features/main/Domain/Entity/teams_entity.dart';
 import 'package:teamapp/Features/main/Domain/Repo/main_page_repo.dart';
 import 'package:teamapp/Features/profile/Data/DataSourse/update_profile_data.dart';
 import 'package:teamapp/Features/profile/Domain/Entity/profile_get_entity.dart';
@@ -22,10 +22,10 @@ class MainPageRepoImpl implements MainPageRepo {
       required this.getDataOfTeamDataSource});
 
   @override
-  Future<Either<Failure, Unit>> checkUserHaveTeam() async {
+  Future<Either<Failure, List<String>>> checkUserHaveTeam() async {
     try {
-      if (await networkInfo.isConnected == true) {
-        return right(await updateProfileData.call(profileUpdateEntity));
+      if (await networkInfo.isConnected) {
+        return Right(await checkUserHaveTeamDataSource.checkFun());
       } else {
         return left(const Failure.offlineError());
       }
@@ -35,10 +35,13 @@ class MainPageRepoImpl implements MainPageRepo {
   }
 
   @override
-  Future<Either<Failure, MainPageEntity>> getDatOfTeam() async {
+  Future<Either<Failure, List<TeamsEntity>>> getDatOfTeams(
+      List<String> teamId) async {
     try {
-      if (await networkInfo.isConnected == true) {
-        return right(await updateProfileData.call(profileUpdateEntity));
+      if (await networkInfo.isConnected) {
+        final teams = await getDataOfTeamDataSource.getTeamData(teamId);
+        print("teams : $teams");
+        return Right(teams);
       } else {
         return left(const Failure.offlineError());
       }

@@ -8,6 +8,7 @@ import 'package:teamapp/Features/auth/Presentation/pages/verifie_page.dart';
 import 'package:teamapp/Features/join%20Team/Presentation/State_mangmeant/bloc/join_team_bloc.dart';
 import 'package:teamapp/Features/join%20Team/Presentation/pages/test_page.dart';
 import 'package:teamapp/Features/main/Presentation/pages/main_page.dart';
+import 'package:teamapp/Features/main/Presentation/state_mangmeant/bloc/main_page_bloc.dart';
 import 'package:teamapp/Features/profile/Presentation/state_mangmeant/bloc/profile_bloc.dart';
 import 'package:teamapp/auth_check.dart';
 import 'Features/auth/Presentation/pages/sign_in_page.dart';
@@ -28,41 +29,45 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData.dark(),
-      debugShowCheckedModeBanner: false,
-      // home: UserFormPage(
-      //   teamRepo: di.sl(),
-      // ),
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => di.sl<ProfileBloc>()),
+        ],
+        child: MaterialApp(
+          theme: ThemeData.dark(),
+          debugShowCheckedModeBanner: false,
+          // home: UserFormPage(
+          //   teamRepo: di.sl(),
+          // ),
 
-      routes: {
-        '/': (context) => const Auth(),
-        '/SignIn': (context) => BlocProvider(
-              create: (context) => di.sl<AuthBloc>(),
-              child: const SignInPage(),
-            ),
-        '/LogIn': (context) => BlocProvider(
-              create: (context) => di.sl<AuthBloc>(),
-              child: const LogInPage(),
-            ),
-        '/Verifie': (context) => BlocProvider(
-              create: (context) => di.sl<AuthBloc>(),
-              child: VerifiePage(),
-            ),
-        // '/testPage': (context) => di.sl<Testpage>(),ProfileBloc,
-        '/mainPage': (context) => BlocProvider(
-              create: (context) => di.sl<ProfileBloc>(),
-              child: const MainPage(),
-            ),
-        '/createTeamPage': (context) => BlocProvider(
-              create: (context) => di.sl<CreateTeamBloc>(),
-              child: const CreateTeamPage(),
-            ),
-        '/joinTeamPage': (context) => BlocProvider(
-              create: (context) => di.sl<JoinTeamBloc>(),
-              child: const TeamSearchPage(),
-            )
-      },
-    );
+          routes: {
+            '/': (context) => const Auth(),
+            '/SignIn': (context) => BlocProvider(
+                  create: (context) => di.sl<AuthBloc>(),
+                  child: const SignInPage(),
+                ),
+            '/LogIn': (context) => BlocProvider(
+                  create: (context) => di.sl<AuthBloc>(),
+                  child: const LogInPage(),
+                ),
+            '/Verifie': (context) => BlocProvider(
+                  create: (context) => di.sl<AuthBloc>(),
+                  child: VerifiePage(),
+                ),
+            // '/testPage': (context) => di.sl<Testpage>(),ProfileBloc,
+            '/mainPage': (context) => BlocProvider(
+                  create: (context) => di.sl<MainPageBloc>(),
+                  child: const MainPage(),
+                ),
+            '/createTeamPage': (context) => BlocProvider(
+                  create: (context) => di.sl<CreateTeamBloc>(),
+                  child: const CreateTeamPage(),
+                ),
+            '/joinTeamPage': (context) => BlocProvider(
+                  create: (context) => di.sl<JoinTeamBloc>(),
+                  child: const TeamSearchPage(),
+                )
+          },
+        ));
   }
 }

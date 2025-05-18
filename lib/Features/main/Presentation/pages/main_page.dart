@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:teamapp/core/widget/custom_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teamapp/Features/main/Presentation/pages/no_team_page.dart';
+import 'package:teamapp/Features/main/Presentation/state_mangmeant/bloc/main_page_bloc.dart';
 import 'package:teamapp/core/widget/app_bar_widget.dart';
 
 import '../../../../core/widget/side_bar_widget.dart';
@@ -15,36 +17,31 @@ class MainPage extends StatelessWidget {
       appBar: const AppBarWidget(
         pageNum: 0,
       ),
-      body: Column(
-        children: [
-          const Spacer(),
-          const Center(
-            child: Text(
-              "join a Team or Create Team \n to use this App",
-              style: TextStyle(color: Colors.white, fontSize: 30),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          CustomButton(
-            text: 'Join Team',
-            onTap: () {
-              Navigator.pushNamed(context, '/joinTeamPage');
-            },
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          CustomButton(
-            text: 'Create Team',
-            onTap: () {
-              Navigator.pushNamed(context, '/createTeamPage');
-            },
-          ),
-          const Spacer()
-        ],
+      body: BlocConsumer<MainPageBloc, MainPageState>(
+        listener: (context, state) {
+          if (state is MainPageFiallurState) {}
+        },
+        builder: (context, state) {
+          if (state is MainPageLoadingState) {
+            return const Center(
+                child: CircularProgressIndicator(color: Colors.white));
+          } else if (state is MainPageSuccsesState) {
+            return Center(
+              child: Text(
+                "${state.data[0].member}",
+                style: TextStyle(color: Colors.white, fontSize: 30),
+              ),
+            );
+          }
+          return NoTeamPage();
+          // Center(
+          //   child: ElevatedButton(
+          //       onPressed: () {
+          //         context.read<MainPageBloc>().add(CheckIfUserHaveTeam());
+          //       },
+          //       child: Text("test")),
+          // );
+        },
       ),
     );
   }

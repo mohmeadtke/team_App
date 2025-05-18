@@ -21,6 +21,13 @@ import 'package:teamapp/Features/join%20Team/Domian/Repo/join_team_repo.dart';
 import 'package:teamapp/Features/join%20Team/Domian/UseCase/get_team_usecase.dart';
 import 'package:teamapp/Features/join%20Team/Domian/UseCase/join_team_usecase.dart';
 import 'package:teamapp/Features/join%20Team/Presentation/State_mangmeant/bloc/join_team_bloc.dart';
+import 'package:teamapp/Features/main/Data/DataSourse/check_user_have_team_data_source.dart';
+import 'package:teamapp/Features/main/Data/DataSourse/get_data_of_team_data_source.dart';
+import 'package:teamapp/Features/main/Data/RepoImpl/profile_repo_impl.dart';
+import 'package:teamapp/Features/main/Domain/Repo/main_page_repo.dart';
+import 'package:teamapp/Features/main/Domain/UseCase/check_user_have_team_usecase.dart';
+import 'package:teamapp/Features/main/Domain/UseCase/get_data_of_team_usecase.dart';
+import 'package:teamapp/Features/main/Presentation/state_mangmeant/bloc/main_page_bloc.dart';
 import 'package:teamapp/Features/profile/Data/DataSourse/get_profile_data_sourse.dart';
 import 'package:teamapp/Features/profile/Data/DataSourse/update_profile_data.dart';
 import 'package:teamapp/Features/profile/Data/RepoImpl/profile_repo_impl.dart';
@@ -35,6 +42,23 @@ final sl = GetIt.instance;
 
 void init() {
 //! Features
+//? Main page
+  //repo
+  sl.registerLazySingleton<MainPageRepo>(() => MainPageRepoImpl(
+        networkInfo: sl(),
+        checkUserHaveTeamDataSource: sl(),
+        getDataOfTeamDataSource: sl(),
+      ));
+  //use case
+  sl.registerLazySingleton(() => CheckUserHaveTeamUsecase(mainPageRepo: sl()));
+  sl.registerLazySingleton(() => GetDataOfTeamUsecase(mainPageRepo: sl()));
+  //data
+  sl.registerFactory(() => CheckUserHaveTeamDataSource());
+  sl.registerFactory(() => GetDataOfTeamDataSource());
+  //bloc
+  sl.registerFactory(() =>
+      MainPageBloc(checkUserHaveTeamUsecase: sl(), getDataOfTeamUsecase: sl()));
+
 //? profile page
 //repo
   sl.registerLazySingleton<ProfileRepo>(() => ProfileRepoImpl(

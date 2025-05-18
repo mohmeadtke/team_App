@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:teamapp/Features/main/Domain/Entity/main-page_entity.dart';
+import 'package:teamapp/Features/main/Domain/Entity/teams_entity.dart';
 import 'package:teamapp/Features/main/Domain/Repo/main_page_repo.dart';
 import 'package:teamapp/core/failure/failure.dart';
 
@@ -8,7 +8,7 @@ class GetDataOfTeamUsecase {
 
   GetDataOfTeamUsecase({required this.mainPageRepo});
 
-  Future<Either<Failure, MainPageEntity>> call() async {
-    return await mainPageRepo.getDatOfTeam();
+  Future<Either<Failure, List<TeamsEntity>>> call(List<String> teamId) async {
+    return await mainPageRepo.getDatOfTeams(teamId);
   }
 }

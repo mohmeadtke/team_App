@@ -28,11 +28,14 @@ class CreateTeamDataSource {
       'teamName': teamentity.teamName,
       'passWord': teamentity.passWord,
       'teamImage': downloadUrl,
+      'members': {
+        uid: 'owner',
+      },
     });
     //add user and there roule in the team
-    await newTeamDoc.collection('members').doc(uid).set({
-      '$uid': 'owner',
-    });
+    // await newTeamDoc.collection('members').doc(uid).set({
+    //   '$uid': 'owner',
+    // });
 
     // Add teamId to user's document
 // Update user document

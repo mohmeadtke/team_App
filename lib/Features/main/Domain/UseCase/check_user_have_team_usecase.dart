@@ -7,7 +7,7 @@ class CheckUserHaveTeamUsecase {
 
   CheckUserHaveTeamUsecase({required this.mainPageRepo});
 
-  Future<Either<Failure, Unit>> call() async {
+  Future<Either<Failure, List<String>>> call() async {
     return await mainPageRepo.checkUserHaveTeam();
   }
 }
