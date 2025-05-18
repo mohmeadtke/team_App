@@ -9,12 +9,7 @@ class UpdateProfileData {
   Future call(ProfileUpdateEntity updateData) async {
 //get the user id to updata the data
 
-    dynamic user = FirebaseAuth.instance.currentUser;
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .where('email', isEqualTo: await user.email)
-        .get();
-    String docId = querySnapshot.docs.first.id;
+    final docId = FirebaseAuth.instance.currentUser?.uid;
 
     //update image
     if (updateData.cheek == "image") {
@@ -33,6 +28,12 @@ class UpdateProfileData {
     else if (updateData.cheek == "name") {
       await FirebaseFirestore.instance.collection('users').doc(docId).update({
         'name': updateData.name,
+      });
+    }
+    else if (updateData.cheek=="bio"){
+
+      await FirebaseFirestore.instance.collection('users').doc(docId).update({
+        'bio': updateData.bio,
       });
     }
 

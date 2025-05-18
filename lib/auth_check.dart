@@ -1,8 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Auth extends StatelessWidget {
+class Auth extends StatefulWidget {
   const Auth({super.key});
+
+  @override
+  State<Auth> createState() => _AuthState();
+}
+
+class _AuthState extends State<Auth> {
+  bool _navigated = false;
 
   @override
   Widget build(BuildContext context) {
@@ -10,30 +17,31 @@ class Auth extends StatelessWidget {
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          // Check if the stream has data
           if (snapshot.connectionState == ConnectionState.active) {
             final user = snapshot.data;
 
-            if (user != null) {
-              if (user.emailVerified) {
-                // Navigate to the UserFormPage
+            if (!_navigated) {
+              _navigated = true;
 
-                Future.microtask(
-                    () => Navigator.pushReplacementNamed(context, '/mainPage'));
-              } else {
-                // Navigate to the Verifie page
+              WidgetsBinding.instance.addPostFrameCallback((_) async {
+                if (user != null) {
+                  await user.reload(); // Force refresh user info
+                  final refreshedUser = FirebaseAuth.instance.currentUser;
 
-                Future.microtask(
-                    () => Navigator.pushReplacementNamed(context, '/Verifie'));
-              }
-            } else {
-              // Navigate to the SignIn page
-              Future.microtask(
-                  () => Navigator.pushReplacementNamed(context, '/SignIn'));
+                  if (refreshedUser!.emailVerified) {
+                    Navigator.pushReplacementNamed(context, '/mainPage');
+                  } else {
+                    Navigator.pushReplacementNamed(context, '/Verifie');
+                  }
+                } else {
+                  Navigator.pushReplacementNamed(context, '/SignIn');
+                }
+              });
             }
+
+            return const SizedBox(); // Or splash screen
           }
 
-          // While the stream is loading or there's no data yet
           return const Center(child: CircularProgressIndicator());
         },
       ),

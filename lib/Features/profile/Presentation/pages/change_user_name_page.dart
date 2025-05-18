@@ -11,7 +11,7 @@ class ChangeUsernamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _usernameController = TextEditingController();
+    final TextEditingController usernameController = TextEditingController();
 //todo distrpude some widget
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +33,7 @@ class ChangeUsernamePage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             TextField(
-              controller: _usernameController,
+              controller: usernameController,
               decoration: const InputDecoration(
                 hintText: 'Enter new username',
               ),
@@ -44,7 +44,7 @@ class ChangeUsernamePage extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  if (_usernameController.text.trim().isEmpty) {
+                  if (usernameController.text.trim().isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Center(
@@ -61,8 +61,9 @@ class ChangeUsernamePage extends StatelessWidget {
                       profileUpdateEntity: ProfileUpdateEntity(
                           cheek: "name",
                           image: File(""),
-                          name: _usernameController.value.text,
-                          passWord: ""));
+                          name: usernameController.value.text,
+                          passWord: "",
+                          bio: ''));
 
                   context.read<ProfileBloc>().add(data);
                   Navigator.pop(context);

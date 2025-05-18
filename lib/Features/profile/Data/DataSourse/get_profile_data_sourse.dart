@@ -6,17 +6,17 @@ import '../model/data_modle.dart';
 
 class GetProfileDataSourse {
   Future<ProfileGetEntity> getData() async {
-    dynamic user = FirebaseAuth.instance.currentUser;
+    final uid = FirebaseAuth.instance.currentUser?.uid;
 
     // Query Firestore to find the document with the matching email
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .where('email', isEqualTo: await user.email)
-        .get();
-
+    final documentSnapshot =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    print("thet DocumentSnapshot : ${documentSnapshot.data()}");
     // Get the first matching document
-    final userData = querySnapshot.docs.first.data();
-    final result = ProfileModel.fromJsonn(userData as Map<String, dynamic>);
+
+    final result =
+        ProfileModel.fromJsonn(documentSnapshot.data() as Map<String, dynamic>);
+    print("result :  $result");
     return result;
   }
 }

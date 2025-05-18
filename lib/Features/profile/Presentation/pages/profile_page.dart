@@ -33,7 +33,8 @@ class _ProfilePageState extends State<ProfilePage> {
               cheek: "image",
               image: image,
               name: profileData.name,
-              passWord: profileData.password)));
+              passWord: profileData.password,
+              bio: '')));
     }
     return;
   }

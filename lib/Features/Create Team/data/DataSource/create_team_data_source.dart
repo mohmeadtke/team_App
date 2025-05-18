@@ -8,61 +8,37 @@ class CreateTeamDataSource {
   Future<Unit> createTeam(TeamEntity teamentity) async {
     //get the user id to updata the data
 
-    dynamic user = FirebaseAuth.instance.currentUser;
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .where('email', isEqualTo: await user.email)
-        .get();
-    String docId = querySnapshot.docs.first.id;
-    //check the counter to give a team id
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final firestore = FirebaseFirestore.instance;
 
-    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+// Auto-generate ID
+    final newTeamDoc = firestore.collection('teams').doc();
+    final teamId = newTeamDoc.id;
 
-    DocumentReference counterDoc =
-        firestore.collection('team_counter').doc('counter');
-
-    WriteBatch batch = firestore.batch();
-
-    // Get the current counter value
-    DocumentSnapshot counterSnapshot = await counterDoc.get();
-
-    // Initialize nextId if counter document doesn't exist
-    int nextId = 0;
-    if (counterSnapshot.exists) {
-      nextId = (counterSnapshot.data() as Map<String, dynamic>)['nextId'];
-      batch.update(counterDoc, {'nextId': FieldValue.increment(1)});
-    } else {
-      batch.set(
-          counterDoc, {'nextId': 1}); // Initialize counter with nextId set to 1
-    }
-
-    String teamId = nextId.toString();
-
-    //uplode image to storge
+// Upload image
     Reference ref =
         FirebaseStorage.instance.ref().child("Team image/$teamId.jpg");
     UploadTask uploadTask = ref.putFile(teamentity.image);
     TaskSnapshot snapshot = await uploadTask;
     String downloadUrl = await snapshot.ref.getDownloadURL();
 
-    //uplode data of the team to fireStore
-    DocumentReference userDoc = firestore.collection('teams').doc(teamId);
-    batch.set(userDoc, {
-      'ownerId': docId,
+// Upload data
+    await newTeamDoc.set({
       'teamId': teamId,
       'teamName': teamentity.teamName,
       'passWord': teamentity.passWord,
       'teamImage': downloadUrl,
-      'members': FieldValue.arrayUnion([docId])
     });
-    //add the team id in user data
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(docId)
-        .update({'teamId': teamId});
+    //add user and there roule in the team
+    await newTeamDoc.collection('members').doc(uid).set({
+      '$uid': 'owner',
+    });
 
-    // Commit the batch
-    await batch.commit();
+    // Add teamId to user's document
+// Update user document
+    await firestore.collection('users').doc(uid).update({
+      'teams': FieldValue.arrayUnion([teamId])
+    });
 
     return unit;
   }
