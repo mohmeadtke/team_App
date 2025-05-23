@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:teamapp/Features/Create%20Team/Domain/Entity/team_entity.dart';
 import 'package:teamapp/Features/main/Domain/Entity/teams_entity.dart';
 import 'package:teamapp/Features/main/Domain/UseCase/check_user_have_team_usecase.dart';
 import 'package:teamapp/Features/main/Domain/UseCase/get_data_of_team_usecase.dart';
@@ -15,24 +14,40 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
       {required this.checkUserHaveTeamUsecase,
       required this.getDataOfTeamUsecase})
       : super(MainPageInitial()) {
-    on<CheckIfUserHaveTeam>((event, emit) async {
+    on<CheckIfUserHaveTeam>((event, emit) {
       emit(MainPageLoadingState());
-
+      Future.delayed(
+        const Duration(seconds: 5),
+        () async {
+          final succesOrFailure = await checkUserHaveTeamUsecase.call();
+          // print("teams id is $succesOrFailure");
+          succesOrFailure.fold(
+              (failure) => emit(
+                    MainPageFiallurState(messge: failure.toString()),
+                  ), (data) {
+            // print("teams id is $data");
+            add(GetTeamsData(teamsId: data));
+          });
+        },
+      );
+    });
+    on<RefreshTeamData>((event, emit) async {
+      // emit(MainPageLoadingState());
       final succesOrFailure = await checkUserHaveTeamUsecase.call();
-      print("teams id is $succesOrFailure");
+      // print("teams id is $succesOrFailure");
       succesOrFailure.fold(
         (failure) => emit(
           MainPageFiallurState(messge: failure.toString()),
         ),
         (data) {
-          print("teams id is $data");
+          // print("teams id is $data");
           add(GetTeamsData(teamsId: data));
         },
       );
     });
     on<GetTeamsData>((event, emit) async {
-      emit(MainPageLoadingState());
-      print("teams id is ${event.teamsId}");
+      // emit(MainPageLoadingState());
+      print("teams id from get team data is ${event.teamsId}");
       final succesOrFailure = await getDataOfTeamUsecase.call(event.teamsId);
       print("teams data is $succesOrFailure");
       emit(succesOrFailure.fold(

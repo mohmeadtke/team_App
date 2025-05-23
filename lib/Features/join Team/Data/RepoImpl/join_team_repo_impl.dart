@@ -35,8 +35,8 @@ class JoinTeamRepoImpl implements JoinTeamRepo {
   Future<Either<Failure, Unit>> joinTeamFun(String teamId) async {
     if (await networkInfo.isConnected) {
       try {
-        joinTeamDataSource.joinTeamFun(teamId);
-        return const Right(unit);
+        return joinTeamDataSource.joinTeamFun(teamId);
+        // return const Right(unit);
       } catch (e) {
         return Left(Failure.serverError(massge: e.toString()));
       }

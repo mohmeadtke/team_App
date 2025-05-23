@@ -3,10 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teamapp/Features/auth/Presentation/state_mangment/bloc/auth_event.dart';
 import '../state_mangment/bloc/auth_bloc.dart';
 import 'vildate_form.dart';
-
-//helo 7
-// helow 88888
-// 9
+import 'package:google_fonts/google_fonts.dart';
 
 class Button extends StatelessWidget {
   Button({
@@ -21,26 +18,42 @@ class Button extends StatelessWidget {
   final TextEditingController name;
   final TextEditingController email;
   final TextEditingController passWord;
-  // final Function submitForm;
   final Vildateform vildateform = Vildateform();
   final dynamic formKey;
 
   @override
   Widget build(BuildContext context) {
+    const accentColor = Color(0xFF7F5AF0);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-      child: Center(
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+      child: SizedBox(
+        width: double.infinity,
+        height: 54,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor:
-                const Color.fromARGB(255, 129, 129, 123), // background color
+            backgroundColor: accentColor,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            elevation: 8,
+            textStyle: GoogleFonts.poppins(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              letterSpacing: 1.1,
+            ),
           ),
           onPressed: () async {
             await onPrssedFun(context);
           },
           child: Text(
-            buttonText,
-            style: const TextStyle(color: Colors.white),
+            buttonText.toUpperCase(),
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              letterSpacing: 1.1,
+            ),
           ),
         ),
       ),
@@ -51,18 +64,11 @@ class Button extends StatelessWidget {
     if (buttonText == 'continue') {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-              "u didnt verifie yet "), // Use the state.message as the content
+          content: Text("You didn't verify yet"),
           duration: Duration(seconds: 8),
         ),
       );
       Navigator.pushNamed(context, '/');
-
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => UserFormPage(),
-      //     ));
     } else if (formKey.currentState?.validate() ?? false) {
       if (buttonText == 'sign-in') {
         BlocProvider.of<AuthBloc>(context)
@@ -71,8 +77,6 @@ class Button extends StatelessWidget {
       if (buttonText == 'log-in') {
         BlocProvider.of<AuthBloc>(context).add(CreateAccountEvent(
             email: email.text, password: passWord.text, name: name.text));
-
-        // BlocProvider.of<AuthBloc>(context).add(SignInWithGoogleEvent());
       }
     }
   }

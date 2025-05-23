@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -10,73 +11,35 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color.fromARGB(255, 22, 20, 20),
-      titleSpacing: 0, // Removes default spacing
-      title: const Center(
-          child: Text(
-        "Team App",
-        style: TextStyle(
-            color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
-      )),
-      actions: [
-        Transform(
-          transform: Matrix4.identity()..scale(-1.0, 1.0), // Flip horizontally
-          alignment: Alignment.center,
-          child: IconButton(
-            icon: const Icon(
-              Icons.message,
-              color: Colors.white,
-            ),
-            onPressed: () {},
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true, // This centers the title text
+      flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF23243A), Color(0xFF181A20)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-        )
-      ],
-
-      // Row(
-      //   children: [
-      //     Expanded(
-      //       child: Stack(
-      //         children: [
-      //           const Expanded(
-      //             child: Center(
-      //               child: Text(
-      //                 "Team App",
-      //                 style: TextStyle(
-      //                     color: Colors.white,
-      //                     fontSize: 30,
-      //                     fontWeight: FontWeight.bold),
-      //               ),
-      //             ),
-      //           ),
-      //           Row(
-      //             children: [
-      //               // IconButton(
-      //               //   icon: const Icon(
-      //               //     Icons.menu,
-      //               //     color: Colors.white,
-      //               //   ),
-      //               //   onPressed: () {},
-      //               // ),
-      //               const Spacer(),
-      //               Transform(
-      //                 transform: Matrix4.identity()
-      //                   ..scale(-1.0, 1.0), // Flip horizontally
-      //                 alignment: Alignment.center,
-      //                 child: IconButton(
-      //                   icon: const Icon(
-      //                     Icons.message,
-      //                     color: Colors.white,
-      //                   ),
-      //                   onPressed: () {},
-      //                 ),
-      //               )
-      //             ],
-      //           ),
-      //         ],
-      //       ),
-      //     )
-      //   ],
-      // ),
+        ),
+      ),
+      title: Text(
+        "Team App",
+        style: GoogleFonts.poppins(
+          color: Colors.white,
+          fontSize: 28,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1.2,
+        ),
+        textAlign: TextAlign.center, // Ensures text is centered
+      ),
+      // actions: [
+      //   IconButton(
+      //     icon: const Icon(Icons.message, color: Color(0xFF7F5AF0)),
+      //     onPressed: () {},
+      //   ),
+      // ],
+      iconTheme: const IconThemeData(color: Colors.white),
     );
   }
 }

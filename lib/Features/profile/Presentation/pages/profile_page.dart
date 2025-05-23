@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:teamapp/Features/profile/Domain/Entity/profile_get_entity.dart';
 import 'package:teamapp/Features/profile/Domain/Entity/profile_update_entity.dart';
 import 'package:teamapp/Features/profile/Presentation/pages/change_user_name_page.dart';
 import 'package:teamapp/Features/profile/Presentation/state_mangmeant/bloc/profile_bloc.dart';
-
+import 'package:teamapp/core/localDataSaved/user_data_local_storge.dart';
 import '../../../../ingectchin.dart' as di;
 
 class ProfilePage extends StatefulWidget {
@@ -19,7 +19,6 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-//todo distrpude some widget2
 class _ProfilePageState extends State<ProfilePage> {
   bool see = false;
   final ImagePicker _picker = ImagePicker();
@@ -54,13 +53,29 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    const accentColor = Color(0xFF7F5AF0);
+    const backgroundColor = Color(0xFF181A20);
+    const cardGradient = LinearGradient(
+      colors: [Color(0xFF23243A), Color(0xFF181A20)],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    );
+
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Profile', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.grey[900],
+        title: Text('Profile',
+            style: GoogleFonts.poppins(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         centerTitle: true,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: cardGradient,
+          ),
+        ),
       ),
+      backgroundColor: backgroundColor,
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
           if (state is FailureState) {
@@ -74,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
         builder: (context, state) {
           if (state is LoadingState) {
             return const Center(
-                child: CircularProgressIndicator(color: Colors.white));
+                child: CircularProgressIndicator(color: accentColor));
           } else if (state is SuccessState) {
             String image = "";
             final ProfileGetEntity profileData = state.data;
@@ -85,46 +100,65 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 40),
                     Stack(
                       children: [
                         Center(
-                          child: CircleAvatar(
-                            radius: 60,
-                            backgroundImage: image.isEmpty
-                                ? const AssetImage('assets/images/anun.jpg')
-                                : NetworkImage(image) as ImageProvider,
-                            backgroundColor:
-                                const Color(0xFF16213E), // Deep dark blue
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: cardGradient,
+                              borderRadius: BorderRadius.circular(100),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: accentColor.withOpacity(0.2),
+                                  blurRadius: 20,
+                                  offset: const Offset(0, 8),
+                                ),
+                              ],
+                            ),
+                            child: CircleAvatar(
+                              radius: 60,
+                              backgroundImage: image.isEmpty
+                                  ? const AssetImage('assets/images/anun.jpg')
+                                  : NetworkImage(image) as ImageProvider,
+                              backgroundColor: backgroundColor,
+                            ),
                           ),
                         ),
                         Center(
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 80, left: 80),
+                            padding: const EdgeInsets.only(top: 90, left: 70),
                             child: GestureDetector(
                               onTap: () {
                                 _pickImage(ImageSource.gallery, profileData);
                               },
                               child: Container(
-                                height: 60,
-                                width: 60,
+                                height: 48,
+                                width: 48,
                                 decoration: BoxDecoration(
-                                    color: Colors.deepPurple[700],
-                                    borderRadius: BorderRadius.circular(100)),
-                                child: const Icon(Icons.camera_alt),
+                                    color: accentColor,
+                                    borderRadius: BorderRadius.circular(100),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: accentColor.withOpacity(0.3),
+                                        blurRadius: 10,
+                                      )
+                                    ]),
+                                child: const Icon(Icons.camera_alt,
+                                    color: Colors.white),
                               ),
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 24),
                     Row(
                       children: [
                         const Spacer(),
                         Text(
                           profileData.name,
-                          style: const TextStyle(
+                          style: GoogleFonts.poppins(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -147,19 +181,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               );
                             },
-                            icon: const Icon(Icons.edit)),
+                            icon: const Icon(Icons.edit, color: accentColor)),
                         const Spacer(),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 12),
                     Text(
                       profileData.email,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        color: Colors.grey,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: Colors.grey[400],
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 24),
                     Center(
                       child: Row(
                         children: [
@@ -167,9 +201,13 @@ class _ProfilePageState extends State<ProfilePage> {
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 12, horizontal: 24),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.05),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
                             child: Text(
-                              "PassWord: ${see ? profileData.password : "*******"}",
-                              style: const TextStyle(
+                              "Password: ${see ? profileData.password : "*******"}",
+                              style: GoogleFonts.poppins(
                                 color: Colors.white,
                                 fontSize: 16,
                               ),
@@ -179,9 +217,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               onPressed: () {
                                 activateBall();
                               },
-                              icon: see
-                                  ? const Icon(Icons.visibility)
-                                  : const Icon(Icons.visibility_off)),
+                              icon: Icon(
+                                  see ? Icons.visibility : Icons.visibility_off,
+                                  color: accentColor)),
                           const Spacer(),
                         ],
                       ),
@@ -189,6 +227,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     const Spacer(),
                     GestureDetector(
                       onTap: () async {
+                        await UserDataCache().clearCache();
                         await FirebaseAuth.instance.signOut();
                         Future.microtask(
                             () => Navigator.pushReplacementNamed(context, '/'));
@@ -197,24 +236,25 @@ class _ProfilePageState extends State<ProfilePage> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 10, horizontal: 20),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF53354A), // Darker purple
+                          color: accentColor,
                           borderRadius: BorderRadius.circular(12),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
+                              color: accentColor.withOpacity(0.3),
                               blurRadius: 10,
                               offset: const Offset(0, 5),
                             )
                           ],
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.logout, color: Colors.white, size: 24),
-                            SizedBox(width: 10),
+                            const Icon(Icons.logout,
+                                color: Colors.white, size: 24),
+                            const SizedBox(width: 10),
                             Text(
                               "Log Out",
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 fontSize: 18,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
@@ -230,9 +270,9 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             );
           }
-          return const Center(
+          return Center(
             child: Text('No Data Available',
-                style: TextStyle(color: Colors.white)),
+                style: GoogleFonts.poppins(color: Colors.white)),
           );
         },
       ),

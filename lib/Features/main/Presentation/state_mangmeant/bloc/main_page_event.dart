@@ -4,8 +4,11 @@ part of 'main_page_bloc.dart';
 sealed class MainPageEvent {}
 
 class CheckIfUserHaveTeam extends MainPageEvent {}
+class RefreshTeamData extends MainPageEvent {}
+
 
 class GetTeamsData extends MainPageEvent {
   final List<String> teamsId;
   GetTeamsData({required this.teamsId});
 }
+

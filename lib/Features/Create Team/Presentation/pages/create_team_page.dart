@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:teamapp/Features/Create%20Team/Domain/Entity/team_entity.dart';
 import 'package:teamapp/Features/Create%20Team/Presentation/state_mangment/bloc/create_team_bloc.dart';
 
@@ -41,38 +41,54 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
 
   @override
   Widget build(BuildContext context) {
+    const accentColor = Color(0xFF7F5AF0);
+    const backgroundColor = Color(0xFF181A20);
+    const cardGradient = LinearGradient(
+      colors: [Color(0xFF23243A), Color(0xFF181A20)],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    );
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        title: const Text('Create Your Team'),
-        backgroundColor: Colors.grey[900],
+        title: Text('Create Your Team',
+            style: GoogleFonts.poppins(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         centerTitle: true,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: cardGradient,
+          ),
+        ),
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(24),
           child: Form(
             key: _formKey,
             child: ListView(
               children: [
-                const SizedBox(height: 50),
+                const SizedBox(height: 30),
                 GestureDetector(
                   onTap: _pickImage,
                   child: CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.grey[800],
+                    radius: 55,
+                    backgroundColor: accentColor.withOpacity(0.1),
                     child: _image == null
                         ? const Icon(
                             Icons.camera_alt,
-                            color: Colors.white70,
-                            size: 30,
+                            color: accentColor,
+                            size: 36,
                           )
                         : ClipOval(
                             child: Image.file(
                               _image!,
                               fit: BoxFit.cover,
-                              width: 100,
-                              height: 100,
+                              width: 110,
+                              height: 110,
                             ),
                           ),
                   ),
@@ -80,14 +96,14 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
                 const SizedBox(height: 30),
                 TextFormField(
                   controller: _teamNameController,
-                  style: const TextStyle(color: Colors.white),
+                  style: GoogleFonts.poppins(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: 'Team Name',
-                    labelStyle: const TextStyle(color: Colors.white70),
+                    labelStyle: GoogleFonts.poppins(color: Colors.white70),
                     filled: true,
-                    fillColor: Colors.grey[900],
+                    fillColor: Colors.white.withOpacity(0.05),
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                        borderRadius: BorderRadius.circular(16)),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -100,14 +116,14 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
                 TextFormField(
                   controller: _passwordController,
                   obscureText: true,
-                  style: const TextStyle(color: Colors.white),
+                  style: GoogleFonts.poppins(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    labelStyle: const TextStyle(color: Colors.white70),
+                    labelStyle: GoogleFonts.poppins(color: Colors.white70),
                     filled: true,
-                    fillColor: Colors.grey[900],
+                    fillColor: Colors.white.withOpacity(0.05),
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                        borderRadius: BorderRadius.circular(16)),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -123,14 +139,14 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
                 TextFormField(
                   controller: _confirmPasswordController,
                   obscureText: true,
-                  style: const TextStyle(color: Colors.white),
+                  style: GoogleFonts.poppins(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: 'Confirm Password',
-                    labelStyle: const TextStyle(color: Colors.white70),
+                    labelStyle: GoogleFonts.poppins(color: Colors.white70),
                     filled: true,
-                    fillColor: Colors.grey[900],
+                    fillColor: Colors.white.withOpacity(0.05),
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                        borderRadius: BorderRadius.circular(16)),
                   ),
                   validator: (value) {
                     if (value != _passwordController.text) {
@@ -140,64 +156,52 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
                   },
                 ),
                 const SizedBox(height: 30),
-                GestureDetector(
-                  //todod make the user jon when he creat the team
-
-                  onTap: () {
-                    if (_formKey.currentState!.validate()) {
-                      if (_image == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Center(
-                              child: Text(
-                                "You should implement an image",
-                                style: TextStyle(color: Colors.white),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        if (_image == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Center(
+                                child: Text(
+                                  "You should implement an image",
+                                  style:
+                                      GoogleFonts.poppins(color: Colors.white),
+                                ),
                               ),
+                              backgroundColor: Colors.redAccent,
                             ),
-                            backgroundColor: Colors.redAccent,
-                          ),
-                        );
-                        return;
-                      }
+                          );
+                          return;
+                        }
 
-                      final data = TeamEntity(
-                          image: File(_image!.path),
-                          teamName: _teamNameController.value.text,
-                          passWord: _passwordController.value.text);
-                      context
-                          .read<CreateTeamBloc>()
-                          .add(CreateTeamEvent.create(teamentity: data));
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: Container(
-                    width: 200,
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      gradient: const LinearGradient(
-                        colors: [Colors.deepPurpleAccent, Colors.blueAccent],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.deepPurpleAccent.withOpacity(0.5),
-                          blurRadius: 10,
-                          spreadRadius: 1,
-                          offset: const Offset(3, 3),
-                        ),
-                      ],
+                        final data = TeamEntity(
+                            image: File(_image!.path),
+                            teamName: _teamNameController.value.text,
+                            passWord: _passwordController.value.text);
+                        context
+                            .read<CreateTeamBloc>()
+                            .add(CreateTeamEvent.create(teamentity: data));
+                        Navigator.pushReplacementNamed(context, '/mainPage');
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: accentColor,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14)),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 32, vertical: 16),
+                      elevation: 8,
                     ),
-                    child: const Center(
-                      child: Text(
-                        "Create Team",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          letterSpacing: 1.2,
-                        ),
+                    child: Text(
+                      "Create Team",
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.2,
                       ),
                     ),
                   ),

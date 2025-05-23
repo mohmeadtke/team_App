@@ -22,8 +22,10 @@ class _JoinDialogState extends State<JoinDialog> {
           .read<JoinTeamBloc>()
           .add(JoinTheTeamEvent(teamId: widget.data.teamId));
 
-      Navigator.of(context).pop(); // Close dialog
-      Navigator.of(context).pop(); // Close dialog
+      // Navigator.of(context).pop(); // Close dialog
+      // Navigator.of(context).pop(); // Close dialog
+      // Navigator.pushNamed(context, '/MainPage');
+      Navigator.pushReplacementNamed(context, '/mainPage');
     } else {
       setState(() {
         error = "Incorrect password";

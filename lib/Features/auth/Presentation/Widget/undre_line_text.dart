@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Undrelinetext extends StatelessWidget {
   const Undrelinetext({super.key, required this.text, required this.fun});
@@ -7,6 +8,7 @@ class Undrelinetext extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const accentColor = Color(0xFF7F5AF0);
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: GestureDetector(
@@ -14,14 +16,13 @@ class Undrelinetext extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: const TextStyle(
-              color: Color(0xFF6877FF), // Set the color
+            style: GoogleFonts.poppins(
+              color: accentColor,
               fontSize: 16,
-              decoration: TextDecoration.underline, // Add underline here
-              decorationColor:
-                  Colors.blue, // Optional: Customize the underline color
-              decorationThickness:
-                  2, // Optional: Set the thickness of the underline
+              decoration: TextDecoration.underline,
+              decorationColor: accentColor,
+              decorationThickness: 2,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),

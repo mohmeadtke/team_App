@@ -6,20 +6,22 @@ import 'package:teamapp/Features/Create%20Team/Presentation/state_mangment/bloc/
 import 'package:teamapp/Features/auth/Presentation/pages/log_in_page.dart';
 import 'package:teamapp/Features/auth/Presentation/pages/verifie_page.dart';
 import 'package:teamapp/Features/join%20Team/Presentation/State_mangmeant/bloc/join_team_bloc.dart';
-import 'package:teamapp/Features/join%20Team/Presentation/pages/test_page.dart';
+import 'package:teamapp/Features/join%20Team/Presentation/pages/team_search_page.dart';
 import 'package:teamapp/Features/main/Presentation/pages/main_page.dart';
 import 'package:teamapp/Features/main/Presentation/state_mangmeant/bloc/main_page_bloc.dart';
 import 'package:teamapp/Features/profile/Presentation/state_mangmeant/bloc/profile_bloc.dart';
 import 'package:teamapp/auth_check.dart';
+import 'package:teamapp/core/localDataSaved/user_data_local_storge.dart';
 import 'Features/auth/Presentation/pages/sign_in_page.dart';
 import 'Features/auth/Presentation/state_mangment/bloc/auth_bloc.dart';
 import 'ingectchin.dart' as di;
 
 //some code
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  UserDataCache().startUserStream();
+
   di.init();
   runApp(const MyApp());
 }

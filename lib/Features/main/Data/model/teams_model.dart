@@ -5,13 +5,17 @@ class TeamsModel extends TeamsEntity {
       {required super.teamName,
       required super.teamId,
       required super.teamImageUrl,
-      required super.member});
+      required super.member,
+      required super.membersMap});
   factory TeamsModel.fromJson(Map<String, dynamic> json) {
+    final membersMap = json['members'] as Map<String, dynamic>? ?? {};
+
     return TeamsModel(
       teamName: json["teamName"],
       teamId: json["teamId"],
       teamImageUrl: json["teamImage"] ?? "",
-      member: List<String>.from(json["members"] ?? []),
+      membersMap: membersMap,
+      member: membersMap.keys.toList(),
     );
   }
 }

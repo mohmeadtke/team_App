@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:teamapp/Features/join%20Team/Presentation/State_mangmeant/bloc/join_team_bloc.dart';
-
 import '../widget/serch_bar_widget.dart';
 import '../widget/serch_list_widget.dart';
 
@@ -10,24 +10,37 @@ class TeamSearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const accentColor = Color(0xFF7F5AF0);
+    const backgroundColor = Color(0xFF181A20);
+    const cardGradient = LinearGradient(
+      colors: [Color(0xFF23243A), Color(0xFF181A20)],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    );
+
     return Scaffold(
-      backgroundColor: const Color(0xFF121212),
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
           'Search Teams',
-          style: TextStyle(color: Colors.white),
+          style: GoogleFonts.poppins(
+              color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: cardGradient,
+          ),
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
-            // 🔍 Search Bar
             const SearchBarWidget(),
             const SizedBox(height: 20),
-            // 📋 Team List / Results
             BlocConsumer<JoinTeamBloc, JoinTeamState>(
               listener: (context, state) {
                 if (state is FailureState) {
@@ -39,15 +52,15 @@ class TeamSearchPage extends StatelessWidget {
               builder: (context, state) {
                 if (state is LoadingState) {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(color: accentColor),
                   );
                 } else if (state is SuccessState) {
                   final data = state.data;
                   if (data.isEmpty) {
-                    return const Center(
+                    return Center(
                       child: Text(
                         "No teams found",
-                        style: TextStyle(color: Colors.white70),
+                        style: GoogleFonts.poppins(color: Colors.white70),
                       ),
                     );
                   } else {
@@ -57,14 +70,14 @@ class TeamSearchPage extends StatelessWidget {
                   return Center(
                     child: Text(
                       state.messge,
-                      style: const TextStyle(color: Colors.redAccent),
+                      style: GoogleFonts.poppins(color: Colors.redAccent),
                     ),
                   );
                 } else {
-                  return const Center(
+                  return Center(
                     child: Text(
                       "Type something to search",
-                      style: TextStyle(color: Colors.white70),
+                      style: GoogleFonts.poppins(color: Colors.white70),
                     ),
                   );
                 }

@@ -2,12 +2,13 @@ class TeamsEntity {
   final String teamName;
   final String teamId;
   final String teamImageUrl;
-  final List member;
+  final Map<String, dynamic> membersMap;
+  final List<String> member;
 
   TeamsEntity(
-      {
-      required this.teamName,
+      {required this.teamName,
       required this.teamId,
       required this.teamImageUrl,
-      required this.member});
+      required this.member,
+      required this.membersMap});
 }

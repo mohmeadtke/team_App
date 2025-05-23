@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:teamapp/core/localDataSaved/user_data_local_storge.dart';
 
 class Auth extends StatefulWidget {
   const Auth({super.key});
@@ -29,6 +30,8 @@ class _AuthState extends State<Auth> {
                   final refreshedUser = FirebaseAuth.instance.currentUser;
 
                   if (refreshedUser!.emailVerified) {
+                    UserDataCache().startUserStream();
+
                     Navigator.pushReplacementNamed(context, '/mainPage');
                   } else {
                     Navigator.pushReplacementNamed(context, '/Verifie');

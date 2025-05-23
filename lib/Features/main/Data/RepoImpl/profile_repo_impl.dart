@@ -39,6 +39,7 @@ class MainPageRepoImpl implements MainPageRepo {
       List<String> teamId) async {
     try {
       if (await networkInfo.isConnected) {
+        print("teamId from impl repo: $teamId");
         final teams = await getDataOfTeamDataSource.getTeamData(teamId);
         print("teams : $teams");
         return Right(teams);
